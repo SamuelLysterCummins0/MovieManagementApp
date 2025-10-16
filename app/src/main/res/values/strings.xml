@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Movie Manager</string>
+    <string name="button_addMovie">Add Movie</string>
+    <string name="hint_movieTitle">Movie Title</string>
+    <string name="hint_movieDirector">Director</string>
+    <string name="hint_movieGenre">Genre</string>
+    <string name="hint_movieYear">Release Year</string>
+    <string name="hint_movieRating">Rating (1-10)</string>
+    <string name="hint_movieCinema">Cinema/Venue</string>
+    <string name="hint_movieDescription">Description</string>
+    <string name="menu_addMovie">Add</string>
+    <string name="menu_cancelMovie">Cancel</string>
+</resources>
