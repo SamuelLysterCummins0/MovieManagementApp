@@ -9,10 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.moviemanager.R
 import org.wit.moviemanager.adapters.MovieAdapter
+import org.wit.moviemanager.adapters.MovieListener
 import org.wit.moviemanager.databinding.ActivityMovieListBinding
 import org.wit.moviemanager.main.MainApp
+import org.wit.moviemanager.models.MovieModel
 
-class MovieListActivity : AppCompatActivity() {
+class MovieListActivity : AppCompatActivity(), MovieListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityMovieListBinding
@@ -28,7 +30,7 @@ class MovieListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = MovieAdapter(app.movies)
+        binding.recyclerView.adapter = MovieAdapter(app.movies, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -46,13 +48,18 @@ class MovieListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onMovieClick(movie: MovieModel) {
+        val launcherIntent = Intent(this, MovieActivity::class.java)
+        launcherIntent.putExtra("movie_edit", movie)
+        getResult.launch(launcherIntent)
+    }
+
     private val getResult =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.movies.size)
+                binding.recyclerView.adapter?.notifyDataSetChanged()
             }
         }
 }
