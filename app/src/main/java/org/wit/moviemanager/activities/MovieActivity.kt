@@ -1,9 +1,13 @@
 package org.wit.moviemanager.activities
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import org.wit.moviemanager.R
 import org.wit.moviemanager.databinding.ActivityMovieBinding
@@ -30,14 +34,40 @@ class MovieActivity : AppCompatActivity() {
 
         i("Movie Activity started...")
 
+        val genres = resources.getStringArray(R.array.genre_options)
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genres)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.movieGenre.adapter = spinnerAdapter
+
+        binding.movieRating.minValue = 1
+        binding.movieRating.maxValue = 10
+        binding.movieRating.value = 5
+        binding.movieRating.wrapSelectorWheel = false
+
+        binding.movieYear.setOnClickListener {
+            val year = binding.movieYear.text.toString().toIntOrNull() ?: Calendar.getInstance().get(Calendar.YEAR)
+
+            DatePickerDialog(this,  { _, selectedYear, _, _ ->
+                binding.movieYear.setText(selectedYear.toString())
+                i("Release year selected: $selectedYear")
+            }, year, 0, 1).show()
+        }
+
         if (intent.hasExtra("movie_edit")) {
             edit = true
             movie = intent.extras?.getParcelable("movie_edit")!!
             binding.movieTitle.setText(movie.title)
             binding.movieDirector.setText(movie.director)
-            binding.movieGenre.setText(movie.genre)
+
+            val genrePosition = genres.indexOf(movie.genre)
+            if (genrePosition >= 0) {
+                binding.movieGenre.setSelection(genrePosition)
+            }
+
+            val ratingValue = movie.rating.toIntOrNull() ?: 5
+            binding.movieRating.value = ratingValue
+
             binding.movieYear.setText(movie.releaseYear)
-            binding.movieRating.setText(movie.rating)
             binding.movieCinema.setText(movie.cinema)
             binding.movieDescription.setText(movie.description)
             binding.btnAdd.text = "Update Movie"
@@ -46,9 +76,9 @@ class MovieActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener() {
             movie.title = binding.movieTitle.text.toString()
             movie.director = binding.movieDirector.text.toString()
-            movie.genre = binding.movieGenre.text.toString()
+            movie.genre = binding.movieGenre.selectedItem.toString()
             movie.releaseYear = binding.movieYear.text.toString()
-            movie.rating = binding.movieRating.text.toString()
+            movie.rating = binding.movieRating.value.toString()
             movie.cinema = binding.movieCinema.text.toString()
             movie.description = binding.movieDescription.text.toString()
 
@@ -71,6 +101,8 @@ class MovieActivity : AppCompatActivity() {
                     i("Movie created: $movie")
                 }
 
+                app.store.save(app.movies)
+
                 for (i in app.movies.indices) {
                     i("Movie[$i]:${app.movies[i]}")
                 }
@@ -84,6 +116,7 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_movie, menu)
         if (edit) {
@@ -96,6 +129,7 @@ class MovieActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.item_delete -> {
                 app.movies.remove(movie)
+                app.store.save(app.movies)
                 i("Movie deleted: $movie")
                 setResult(RESULT_OK)
                 finish()

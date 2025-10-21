@@ -10,4 +10,18 @@
     <string name="hint_movieDescription">Description</string>
     <string name="menu_addMovie">Add</string>
     <string name="menu_cancelMovie">Cancel</string>
+
+    <string-array name="genre_options">
+        <item>Select Genre</item>
+        <item>Action</item>
+        <item>Comedy</item>
+        <item>Drama</item>
+        <item>Horror</item>
+        <item>Romance</item>
+        <item>Sci-Fi</item>
+        <item>Thriller</item>
+        <item>Documentary</item>
+        <item>Animation</item>
+        <item>Other</item>
+    </string-array>
 </resources>

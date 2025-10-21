@@ -8,4 +8,11 @@
         android:title="@string/menu_addMovie"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/item_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
 </menu>

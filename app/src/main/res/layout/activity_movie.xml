@@ -76,22 +76,14 @@
                     android:textSize="14sp"
                     tools:ignore="VisualLintTextFieldSize" />
 
-                <EditText
+                <Spinner
                     android:id="@+id/movieGenre"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_margin="8dp"
-                    android:hint="@string/hint_movieGenre"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:maxLength="30"
-                    android:maxLines="1"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
                     android:background="@color/colorBackground"
-                    android:textSize="14sp"
-                    tools:ignore="VisualLintTextFieldSize" />
+                    android:padding="8dp"
+                    android:spinnerMode="dropdown" />
 
                 <EditText
                     android:id="@+id/movieYear"
@@ -100,7 +92,8 @@
                     android:layout_margin="8dp"
                     android:hint="@string/hint_movieYear"
                     android:importantForAutofill="no"
-                    android:inputType="number"
+                    android:inputType="none"
+                    android:focusable="false"
                     android:maxLength="4"
                     android:maxLines="1"
                     android:padding="8dp"
@@ -108,24 +101,17 @@
                     android:textColorHint="@color/white"
                     android:background="@color/colorBackground"
                     android:textSize="14sp"
+                    android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                    android:drawablePadding="8dp"
                     tools:ignore="VisualLintTextFieldSize" />
 
-                <EditText
+                <NumberPicker
                     android:id="@+id/movieRating"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="@string/hint_movieRating"
-                    android:importantForAutofill="no"
-                    android:inputType="numberDecimal"
-                    android:maxLength="4"
-                    android:maxLines="1"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
                     android:background="@color/colorBackground"
-                    android:textSize="14sp"
-                    tools:ignore="VisualLintTextFieldSize" />
+                    android:theme="@style/NumberPickerTheme" />
 
                 <EditText
                     android:id="@+id/movieCinema"

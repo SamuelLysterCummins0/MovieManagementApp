@@ -78,5 +78,18 @@
             android:textColor="@color/white"
             tools:text="Cinema: Vue Dublin" />
 
+        <TextView
+            android:id="@+id/movieDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movieCinema"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:alpha="0.8"
+            android:maxLines="3"
+            android:ellipsize="end"
+            tools:text="This is a great movie about..." />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -1,6 +1,7 @@
 package org.wit.moviemanager.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.wit.moviemanager.databinding.CardMovieBinding
@@ -31,11 +32,45 @@ class MovieAdapter(private var movies: List<MovieModel>, private val listener: M
 
         fun bind(movie: MovieModel, listener: MovieListener) {
             binding.movieTitle.text = movie.title
-            binding.movieDirector.text = movie.director
-            binding.movieGenre.text = movie.genre
-            binding.movieYear.text = movie.releaseYear
+
+            if (movie.director.isNotEmpty()) {
+                binding.movieDirector.text = movie.director
+                binding.movieDirector.visibility = View.VISIBLE
+            } else {
+                binding.movieDirector.visibility = View.GONE
+            }
+
+            if (movie.genre.isNotEmpty() && movie.genre != "Select Genre") {
+                binding.movieGenre.text = movie.genre
+                binding.movieGenre.visibility = View.VISIBLE
+            } else {
+                binding.movieGenre.visibility = View.GONE
+            }
+
+            if (movie.releaseYear.isNotEmpty()) {
+                binding.movieYear.text = movie.releaseYear
+                binding.movieYear.visibility = View.VISIBLE
+            } else {
+                binding.movieYear.visibility = View.GONE
+            }
+
             binding.movieRating.text = "Rating: ${movie.rating}/10"
-            binding.movieCinema.text = "Cinema: ${movie.cinema}"
+            binding.movieRating.visibility = View.VISIBLE
+
+            if (movie.cinema.isNotEmpty()) {
+                binding.movieCinema.text = "Cinema: ${movie.cinema}"
+                binding.movieCinema.visibility = View.VISIBLE
+            } else {
+                binding.movieCinema.visibility = View.GONE
+            }
+
+            if (movie.description.isNotEmpty()) {
+                binding.movieDescription.text = movie.description
+                binding.movieDescription.visibility = View.VISIBLE
+            } else {
+                binding.movieDescription.visibility = View.GONE
+            }
+
             binding.root.setOnClickListener { listener.onMovieClick(movie) }
         }
     }
