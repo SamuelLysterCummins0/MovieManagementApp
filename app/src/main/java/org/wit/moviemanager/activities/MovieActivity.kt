@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import org.wit.moviemanager.R
 import org.wit.moviemanager.databinding.ActivityMovieBinding
@@ -53,6 +53,32 @@ class MovieActivity : AppCompatActivity() {
             }, year, 0, 1).show()
         }
 
+        binding.btnFavorite.setOnClickListener {
+            movie.isFavorite = !movie.isFavorite
+            updateFavoriteButton()
+            if (movie.isFavorite && movie.isWatchlist) {
+                movie.isWatchlist = false
+                updateWatchlistButton()
+                showWatchedFields()
+            }
+            i("Favorite toggled: ${movie.isFavorite}")
+        }
+
+        binding.btnWatchlist.setOnClickListener {
+            movie.isWatchlist = !movie.isWatchlist
+            updateWatchlistButton()
+            if (movie.isWatchlist) {
+                if (movie.isFavorite) {
+                    movie.isFavorite = false
+                    updateFavoriteButton()
+                }
+                hideWatchedFields()
+            } else {
+                showWatchedFields()
+            }
+            i("Watchlist toggled: ${movie.isWatchlist}")
+        }
+
         if (intent.hasExtra("movie_edit")) {
             edit = true
             movie = intent.extras?.getParcelable("movie_edit")!!
@@ -71,6 +97,13 @@ class MovieActivity : AppCompatActivity() {
             binding.movieCinema.setText(movie.cinema)
             binding.movieDescription.setText(movie.description)
             binding.btnAdd.text = "Update Movie"
+
+            updateFavoriteButton()
+            updateWatchlistButton()
+
+            if (movie.isWatchlist) {
+                hideWatchedFields()
+            }
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -78,9 +111,15 @@ class MovieActivity : AppCompatActivity() {
             movie.director = binding.movieDirector.text.toString()
             movie.genre = binding.movieGenre.selectedItem.toString()
             movie.releaseYear = binding.movieYear.text.toString()
-            movie.rating = binding.movieRating.value.toString()
-            movie.cinema = binding.movieCinema.text.toString()
             movie.description = binding.movieDescription.text.toString()
+
+            if (!movie.isWatchlist) {
+                movie.rating = binding.movieRating.value.toString()
+                movie.cinema = binding.movieCinema.text.toString()
+            } else {
+                movie.rating = ""
+                movie.cinema = ""
+            }
 
             if (movie.title.isNotEmpty()) {
                 if (edit) {
@@ -93,6 +132,8 @@ class MovieActivity : AppCompatActivity() {
                         foundMovie.rating = movie.rating
                         foundMovie.cinema = movie.cinema
                         foundMovie.description = movie.description
+                        foundMovie.isFavorite = movie.isFavorite
+                        foundMovie.isWatchlist = movie.isWatchlist
                         i("Movie updated: $foundMovie")
                     }
                 } else {
@@ -116,6 +157,40 @@ class MovieActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
+    private fun updateFavoriteButton() {
+        if (movie.isFavorite) {
+            binding.btnFavorite.text = "⭐ Favorited"
+            binding.btnFavorite.setBackgroundColor(resources.getColor(R.color.colorAccent, null))
+        } else {
+            binding.btnFavorite.text = "⭐ Favorite"
+            binding.btnFavorite.setBackgroundColor(resources.getColor(R.color.colorBackground, null))
+        }
+    }
+
+    private fun updateWatchlistButton() {
+        if (movie.isWatchlist) {
+            binding.btnWatchlist.text = "📋 On Watchlist"
+            binding.btnWatchlist.setBackgroundColor(resources.getColor(R.color.colorAccent, null))
+        } else {
+            binding.btnWatchlist.text = "📋 Watchlist"
+            binding.btnWatchlist.setBackgroundColor(resources.getColor(R.color.colorBackground, null))
+        }
+    }
+
+    private fun hideWatchedFields() {
+        binding.ratingSection.visibility = View.GONE
+        binding.cinemaSection.visibility = View.GONE
+    }
+
+    private fun showWatchedFields() {
+        binding.ratingSection.visibility = View.VISIBLE
+        binding.cinemaSection.visibility = View.VISIBLE
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_movie, menu)

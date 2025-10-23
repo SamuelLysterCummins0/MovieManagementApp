@@ -22,6 +22,7 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
     private lateinit var binding: ActivityMovieListBinding
 
     private var filteredMovies = ArrayList<MovieModel>()
+    private var currentFilter = "all"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +35,8 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = MovieAdapter(app.movies, this)
 
-        filteredMovies.addAll(app.movies)
-        binding.recyclerView.adapter = MovieAdapter(filteredMovies, this)
+        applyFilter(currentFilter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -52,7 +51,7 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterMovies(newText)
+                searchMovies(newText)
                 return true
             }
         })
@@ -65,6 +64,25 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, MovieActivity::class.java)
                 getResult.launch(launcherIntent)
+            }
+            R.id.filter_all -> {
+                currentFilter = "all"
+                applyFilter(currentFilter)
+                i("Filter changed to: All Movies")
+            }
+            R.id.filter_favorites -> {
+                currentFilter = "favorites"
+                applyFilter(currentFilter)
+                i("Filter changed to: Favorites")
+            }
+            R.id.filter_watchlist -> {
+                currentFilter = "watchlist"
+                applyFilter(currentFilter)
+                i("Filter changed to: Watchlist")
+            }
+            R.id.item_statistics -> {
+                val launcherIntent = Intent(this, StatisticsActivity::class.java)
+                startActivity(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -81,22 +99,48 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == RESULT_OK) {
-                filteredMovies.clear()
-                filteredMovies.addAll(app.movies)
-                binding.recyclerView.adapter?.notifyDataSetChanged()
+                applyFilter(currentFilter)
                 i("Movie list updated")
             }
         }
 
-    private fun filterMovies(query: String?) {
+    private fun applyFilter(filter: String) {
+        filteredMovies.clear()
+
+        when (filter) {
+            "all" -> {
+                filteredMovies.addAll(app.movies)
+                binding.toolbar.title = "All Movies"
+            }
+            "favorites" -> {
+                filteredMovies.addAll(app.movies.filter { it.isFavorite })
+                binding.toolbar.title = "Favorites"
+            }
+            "watchlist" -> {
+                filteredMovies.addAll(app.movies.filter { it.isWatchlist })
+                binding.toolbar.title = "Watchlist"
+            }
+        }
+
+        binding.recyclerView.adapter = MovieAdapter(filteredMovies, this)
+        i("Showing $filter: ${filteredMovies.size} movies")
+    }
+
+    private fun searchMovies(query: String?) {
+        val baseList = when (currentFilter) {
+            "favorites" -> app.movies.filter { it.isFavorite }
+            "watchlist" -> app.movies.filter { it.isWatchlist }
+            else -> app.movies
+        }
+
         filteredMovies.clear()
 
         if (query.isNullOrEmpty()) {
-            filteredMovies.addAll(app.movies)
-            i("Showing all movies: ${filteredMovies.size}")
+            filteredMovies.addAll(baseList)
+            i("Showing all in current filter: ${filteredMovies.size}")
         } else {
             val searchQuery = query.lowercase()
-            val results = app.movies.filter { movie ->
+            val results = baseList.filter { movie ->
                 movie.title.lowercase().contains(searchQuery) ||
                         movie.director.lowercase().contains(searchQuery) ||
                         movie.genre.lowercase().contains(searchQuery)
@@ -106,5 +150,10 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
         }
 
         binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        applyFilter(currentFilter)
     }
 }

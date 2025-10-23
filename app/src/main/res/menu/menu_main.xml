@@ -9,10 +9,34 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/item_filter"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Filter"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/filter_all"
+                android:title="All Movies"
+                android:checked="true" />
+            <item
+                android:id="@+id/filter_favorites"
+                android:title="Favorites" />
+            <item
+                android:id="@+id/filter_watchlist"
+                android:title="Watchlist" />
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/item_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <item
+        android:id="@+id/item_statistics"
+        android:title="Statistics"
+        app:showAsAction="never" />
 
 </menu>

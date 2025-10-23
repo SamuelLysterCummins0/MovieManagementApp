@@ -42,6 +42,38 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp">
+
+                    <Button
+                        android:id="@+id/btnFavorite"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="4dp"
+                        android:background="@color/colorBackground"
+                        android:text="⭐ Favorite"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:padding="12dp" />
+
+                    <Button
+                        android:id="@+id/btnWatchlist"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="4dp"
+                        android:background="@color/colorBackground"
+                        android:text="📋 Watchlist"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:padding="12dp" />
+                </LinearLayout>
+
                 <EditText
                     android:id="@+id/movieTitle"
                     android:layout_width="match_parent"
@@ -105,30 +137,44 @@
                     android:drawablePadding="8dp"
                     tools:ignore="VisualLintTextFieldSize" />
 
-                <NumberPicker
-                    android:id="@+id/movieRating"
+                <LinearLayout
+                    android:id="@+id/ratingSection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@color/colorBackground"
-                    android:theme="@style/NumberPickerTheme" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/movieCinema"
+                    <NumberPicker
+                        android:id="@+id/movieRating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@color/colorBackground"
+                        android:theme="@style/NumberPickerTheme" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cinemaSection"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_margin="8dp"
-                    android:hint="@string/hint_movieCinema"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:padding="8dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:background="@color/colorBackground"
-                    android:textSize="14sp"
-                    tools:ignore="VisualLintTextFieldSize" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/movieCinema"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_margin="8dp"
+                        android:hint="@string/hint_movieCinema"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLength="50"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:background="@color/colorBackground"
+                        android:textSize="14sp"
+                        tools:ignore="VisualLintTextFieldSize" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/movieDescription"

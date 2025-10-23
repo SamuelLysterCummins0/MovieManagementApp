@@ -11,4 +11,6 @@ data class MovieModel(
     var releaseYear: String = "",
     var rating: String = "",
     var cinema: String = "",
-    var description: String = "") : Parcelable
+    var description: String = "",
+    var isFavorite: Boolean = false,
+    var isWatchlist: Boolean = false) : Parcelable

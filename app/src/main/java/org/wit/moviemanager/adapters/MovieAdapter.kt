@@ -33,6 +33,17 @@ class MovieAdapter(private var movies: List<MovieModel>, private val listener: M
         fun bind(movie: MovieModel, listener: MovieListener) {
             binding.movieTitle.text = movie.title
 
+            if (movie.isFavorite) {
+                binding.movieFavoriteIcon.visibility = View.VISIBLE
+                binding.movieWatchlistIcon.visibility = View.GONE
+            } else if (movie.isWatchlist) {
+                binding.movieFavoriteIcon.visibility = View.GONE
+                binding.movieWatchlistIcon.visibility = View.VISIBLE
+            } else {
+                binding.movieFavoriteIcon.visibility = View.GONE
+                binding.movieWatchlistIcon.visibility = View.GONE
+            }
+
             if (movie.director.isNotEmpty()) {
                 binding.movieDirector.text = movie.director
                 binding.movieDirector.visibility = View.VISIBLE
