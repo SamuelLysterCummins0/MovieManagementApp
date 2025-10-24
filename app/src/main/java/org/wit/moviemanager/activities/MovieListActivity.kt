@@ -4,10 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import org.wit.moviemanager.R
 import org.wit.moviemanager.adapters.MovieAdapter
 import org.wit.moviemanager.adapters.MovieListener
@@ -16,13 +21,16 @@ import org.wit.moviemanager.main.MainApp
 import org.wit.moviemanager.models.MovieModel
 import timber.log.Timber.i
 
-class MovieListActivity : AppCompatActivity(), MovieListener {
+class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityMovieListBinding
 
     private var filteredMovies = ArrayList<MovieModel>()
     private var currentFilter = "all"
+    private var isEditMode = false
+    private lateinit var adapter: MovieAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +44,54 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
 
+        val toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        binding.navView.setNavigationItemSelectedListener(this)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    finish()
+                }
+            }
+        })
+
         applyFilter(currentFilter)
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_all_movies -> {
+                currentFilter = "all"
+                applyFilter(currentFilter)
+            }
+            R.id.nav_favorites -> {
+                currentFilter = "favorites"
+                applyFilter(currentFilter)
+            }
+            R.id.nav_watchlist -> {
+                currentFilter = "watchlist"
+                applyFilter(currentFilter)
+            }
+            R.id.nav_statistics -> {
+                val intent = Intent(this, StatisticsActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -65,6 +119,19 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
                 val launcherIntent = Intent(this, MovieActivity::class.java)
                 getResult.launch(launcherIntent)
             }
+            R.id.item_edit_mode -> {
+                isEditMode = !isEditMode
+                adapter.updateEditMode(isEditMode)
+
+                if (isEditMode) {
+                    Snackbar.make(binding.root, "Edit Mode: Tap movies to edit", Snackbar.LENGTH_SHORT).show()
+                    item.setIcon(android.R.drawable.ic_menu_close_clear_cancel)
+                } else {
+                    Snackbar.make(binding.root, "Edit Mode: Off", Snackbar.LENGTH_SHORT).show()
+                    item.setIcon(android.R.drawable.ic_menu_edit)
+                }
+                i("Edit mode toggled: $isEditMode")
+            }
             R.id.filter_all -> {
                 currentFilter = "all"
                 applyFilter(currentFilter)
@@ -80,10 +147,7 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
                 applyFilter(currentFilter)
                 i("Filter changed to: Watchlist")
             }
-            R.id.item_statistics -> {
-                val launcherIntent = Intent(this, StatisticsActivity::class.java)
-                startActivity(launcherIntent)
-            }
+
         }
         return super.onOptionsItemSelected(item)
     }
@@ -122,7 +186,8 @@ class MovieListActivity : AppCompatActivity(), MovieListener {
             }
         }
 
-        binding.recyclerView.adapter = MovieAdapter(filteredMovies, this)
+        adapter = MovieAdapter(filteredMovies, this, isEditMode)
+        binding.recyclerView.adapter = adapter
         i("Showing $filter: ${filteredMovies.size} movies")
     }
 

@@ -28,15 +28,17 @@
     </item>
 
     <item
+        android:id="@+id/item_edit_mode"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Edit Mode"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/item_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
-    <item
-        android:id="@+id/item_statistics"
-        android:title="Statistics"
-        app:showAsAction="never" />
 
 </menu>

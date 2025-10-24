@@ -6,4 +6,5 @@
     <color name="colorPrimaryDark">#16213E</color>
     <color name="colorAccent">#E94560</color>
     <color name="colorBackground">#0F3460</color>
+    <color name="colorEditMode">#E9456050</color>
 </resources>

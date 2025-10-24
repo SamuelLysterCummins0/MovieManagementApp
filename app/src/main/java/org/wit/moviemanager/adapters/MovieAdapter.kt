@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import org.wit.moviemanager.R
 import org.wit.moviemanager.databinding.CardMovieBinding
 import org.wit.moviemanager.models.MovieModel
 
 interface MovieListener {
     fun onMovieClick(movie: MovieModel)
 }
-class MovieAdapter(private var movies: List<MovieModel>, private val listener: MovieListener) :
+class MovieAdapter(private var movies: List<MovieModel>, private val listener: MovieListener, private var isEditMode: Boolean = false) :
     RecyclerView.Adapter<MovieAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -22,16 +23,31 @@ class MovieAdapter(private var movies: List<MovieModel>, private val listener: M
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val movie = movies[holder.adapterPosition]
-        holder.bind(movie, listener)
+        holder.bind(movie, listener, isEditMode)
     }
 
     override fun getItemCount(): Int = movies.size
 
-    class MainHolder(private val binding : CardMovieBinding) :
+    fun updateEditMode(editMode: Boolean) {
+        isEditMode = editMode
+        notifyDataSetChanged()
+    }
+
+    class MainHolder(private val binding: CardMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(movie: MovieModel, listener: MovieListener) {
+        fun bind(movie: MovieModel, listener: MovieListener, isEditMode: Boolean) {
             binding.movieTitle.text = movie.title
+
+            if (isEditMode) {
+                binding.root.setCardBackgroundColor(
+                    binding.root.context.resources.getColor(R.color.colorEditMode, null)
+                )
+            } else {
+                binding.root.setCardBackgroundColor(
+                    binding.root.context.resources.getColor(R.color.colorBackground, null)
+                )
+            }
 
             if (movie.isFavorite) {
                 binding.movieFavoriteIcon.visibility = View.VISIBLE
@@ -82,7 +98,11 @@ class MovieAdapter(private var movies: List<MovieModel>, private val listener: M
                 binding.movieDescription.visibility = View.GONE
             }
 
-            binding.root.setOnClickListener { listener.onMovieClick(movie) }
+            binding.root.setOnClickListener {
+                if (isEditMode) {
+                    listener.onMovieClick(movie)
+                }
+            }
         }
     }
 }

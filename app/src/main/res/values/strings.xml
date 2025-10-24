@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Movie Manager</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="button_addMovie">Add Movie</string>
     <string name="hint_movieTitle">Movie Title</string>
     <string name="hint_movieDirector">Director</string>
