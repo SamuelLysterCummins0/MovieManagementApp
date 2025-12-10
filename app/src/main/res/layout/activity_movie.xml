@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="16dp">
 
                     <Button
                         android:id="@+id/btnFavorite"
@@ -74,6 +74,26 @@
                         android:padding="12dp" />
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/movieImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="centerCrop"
+                    android:background="@color/colorBackground"
+                    android:src="@android:drawable/ic_menu_gallery" />
+
+                <Button
+                    android:id="@+id/chooseImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@color/colorAccent"
+                    android:text="Change Movie Poster"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+
                 <EditText
                     android:id="@+id/movieTitle"
                     android:layout_width="match_parent"
@@ -90,6 +110,7 @@
                     android:background="@color/colorBackground"
                     android:textSize="14sp"
                     tools:ignore="VisualLintTextFieldSize" />
+
 
                 <EditText
                     android:id="@+id/movieDirector"
@@ -108,6 +129,7 @@
                     android:textSize="14sp"
                     tools:ignore="VisualLintTextFieldSize" />
 
+
                 <Spinner
                     android:id="@+id/movieGenre"
                     android:layout_width="match_parent"
@@ -116,6 +138,7 @@
                     android:background="@color/colorBackground"
                     android:padding="8dp"
                     android:spinnerMode="dropdown" />
+
 
                 <EditText
                     android:id="@+id/movieYear"
@@ -137,6 +160,7 @@
                     android:drawablePadding="8dp"
                     tools:ignore="VisualLintTextFieldSize" />
 
+                <!-- Rating Section -->
                 <LinearLayout
                     android:id="@+id/ratingSection"
                     android:layout_width="match_parent"
@@ -151,6 +175,7 @@
                         android:background="@color/colorBackground"
                         android:theme="@style/NumberPickerTheme" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/cinemaSection"
@@ -174,7 +199,33 @@
                         android:background="@color/colorBackground"
                         android:textSize="14sp"
                         tools:ignore="VisualLintTextFieldSize" />
+
+                    <EditText
+                        android:id="@+id/movieCinemaAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:hint="Cinema Address"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine"
+                        android:maxLines="2"
+                        android:padding="8dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:background="@color/colorBackground"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/movieLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@color/colorAccent"
+                        android:text="Set Cinema Location"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
                 </LinearLayout>
+
 
                 <EditText
                     android:id="@+id/movieDescription"
@@ -192,6 +243,7 @@
                     android:textSize="14sp"
                     android:gravity="top"
                     tools:ignore="VisualLintTextFieldSize" />
+
 
                 <Button
                     android:id="@+id/btnAdd"

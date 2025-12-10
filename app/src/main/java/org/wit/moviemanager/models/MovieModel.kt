@@ -1,5 +1,6 @@
 package org.wit.moviemanager.models
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 @Parcelize
@@ -11,6 +12,17 @@ data class MovieModel(
     var releaseYear: String = "",
     var rating: String = "",
     var cinema: String = "",
+    var cinemaAddress: String = "",
     var description: String = "",
     var isFavorite: Boolean = false,
-    var isWatchlist: Boolean = false) : Parcelable
+    var isWatchlist: Boolean = false,
+    var image: Uri = Uri.EMPTY,
+    var lat: Double = 0.0,
+    var lng: Double = 0.0,
+    var zoom: Float = 0f) : Parcelable
+
+@Parcelize
+data class Location(
+    var lat: Double = 0.0,
+    var lng: Double = 0.0,
+    var zoom: Float = 0f) : Parcelable

@@ -13,105 +13,217 @@
     app:cardCornerRadius="8dp"
     android:elevation="24dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/movieTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            tools:text="Movie Title" />
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-        <TextView
-            android:id="@+id/movieFavoriteIcon"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/movieImage"
+                android:layout_width="80dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:background="@color/colorPrimary"
+                tools:src="@android:drawable/ic_menu_gallery" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/movieTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        tools:text="Movie Title" />
+
+                    <TextView
+                        android:id="@+id/movieFavoriteIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⭐"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="8dp"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/movieWatchlistIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📋"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        android:layout_marginStart="8dp"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/movieDirector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorAccent"
+                    tools:text="Director Name" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:id="@+id/movieGenre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/white"
+                        tools:text="Horror" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" • "
+                        android:textSize="13sp"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/movieYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/white"
+                        tools:text="2024" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/movieRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/white"
+                    tools:text="⭐ 8/10" />
+
+                <TextView
+                    android:id="@+id/movieCinema"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:alpha="0.8"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="📍 ODEON Waterford" />
+
+                <TextView
+                    android:id="@+id/expandIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="▼ Tap for more details"
+                    android:textSize="11sp"
+                    android:textColor="@color/colorAccent"
+                    android:gravity="center" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/expandableContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:text="⭐"
-            android:textSize="24sp"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:paddingTop="0dp"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/movieWatchlistIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:text="📋"
-            android:textSize="24sp"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:id="@+id/movieDirector"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/movieTitle"
-            android:layout_marginTop="4dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorAccent"
-            tools:text="Director Name" />
+            <TextView
+                android:id="@+id/movieDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:alpha="0.9"
+                android:layout_marginBottom="12dp"
+                tools:text="This is a great movie about..." />
 
-        <TextView
-            android:id="@+id/movieGenre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/movieDirector"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            tools:text="Genre" />
+            <LinearLayout
+                android:id="@+id/addressSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="12dp">
 
-        <TextView
-            android:id="@+id/movieYear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/movieGenre"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            tools:text="2024" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cinema Address:"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/movieRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/movieYear"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            tools:text="Rating: 8.5/10" />
+                <TextView
+                    android:id="@+id/movieCinemaAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:alpha="0.8"
+                    tools:text="123 Main Street, Waterford" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/movieCinema"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/movieRating"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
-            android:textColor="@color/white"
-            tools:text="Cinema: Vue Dublin" />
+            <LinearLayout
+                android:id="@+id/mapSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/movieDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/movieCinema"
-            android:layout_marginTop="8dp"
-            android:textSize="13sp"
-            android:textColor="@color/white"
-            android:alpha="0.8"
-            android:maxLines="3"
-            android:ellipsize="end"
-            tools:text="This is a great movie about..." />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cinema Location:"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
 
-    </RelativeLayout>
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/movieMapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

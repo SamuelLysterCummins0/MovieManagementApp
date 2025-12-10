@@ -20,6 +20,7 @@ import org.wit.moviemanager.databinding.ActivityMovieListBinding
 import org.wit.moviemanager.main.MainApp
 import org.wit.moviemanager.models.MovieModel
 import timber.log.Timber.i
+import java.util.ArrayList
 
 class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -220,5 +221,10 @@ class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnN
     override fun onResume() {
         super.onResume()
         applyFilter(currentFilter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }

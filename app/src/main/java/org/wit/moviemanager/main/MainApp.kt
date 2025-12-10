@@ -3,14 +3,14 @@ package org.wit.moviemanager.main
 import android.app.Application
 import org.wit.moviemanager.models.MovieJSONStore
 import org.wit.moviemanager.models.MovieModel
+import org.wit.moviemanager.models.MovieStore
 import timber.log.Timber
 import timber.log.Timber.i
 
 class MainApp : Application() {
 
     lateinit var movies : ArrayList<MovieModel>
-    var lastId = 0L
-    lateinit var store: MovieJSONStore
+    lateinit var store: MovieStore
 
     override fun onCreate() {
         super.onCreate()
@@ -18,11 +18,7 @@ class MainApp : Application() {
         i("Movie Manager started")
 
         store = MovieJSONStore(applicationContext)
-        movies = store.load()
-
-        if (movies.isNotEmpty()) {
-            lastId = movies.last().id + 1
-        }
+        movies = store.findAll()
 
         i("Loaded ${movies.size} movies")
     }
