@@ -63,6 +63,8 @@ class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnN
 
         binding.navView.setNavigationItemSelectedListener(this)
 
+        setupNightModeSwitch()
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -230,6 +232,28 @@ class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnN
         }
 
         binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    private fun setupNightModeSwitch() {
+        val headerView = binding.navView.getHeaderView(0)
+        val nightModeSwitch = headerView.findViewById<androidx.appcompat.widget.SwitchCompat>(R.id.nightModeSwitch)
+
+        val prefs = getSharedPreferences("MovieManagerPrefs", Context.MODE_PRIVATE)
+        val isNightMode = prefs.getBoolean("night_mode", false)
+
+        nightModeSwitch.isChecked = isNightMode
+
+        nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean("night_mode", isChecked).apply()
+
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+            i("Night mode: $isChecked")
+        }
     }
 
 
