@@ -160,7 +160,6 @@
                     android:drawablePadding="8dp"
                     tools:ignore="VisualLintTextFieldSize" />
 
-                <!-- Rating Section -->
                 <LinearLayout
                     android:id="@+id/ratingSection"
                     android:layout_width="match_parent"
@@ -221,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:background="@color/colorAccent"
-                        android:text="Set Cinema Location"
+                        android:text="Find Cinema Location"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
                 </LinearLayout>

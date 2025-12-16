@@ -27,9 +27,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.lib_name"
-                android:value="" />
         </activity>
+
+        <activity android:name=".activities.LoginActivity"
+            android:exported="false" />
 
         <activity android:name=".activities.MovieListActivity"
             android:exported="false">
@@ -48,7 +49,8 @@
         </activity>
 
         <activity android:name=".activities.MapActivity"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
             <meta-data android:name="android.app.lib_name"
                 android:value="" />
         </activity>

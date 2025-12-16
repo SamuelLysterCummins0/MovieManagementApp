@@ -2,6 +2,7 @@ package org.wit.moviemanager.models
 
 import android.net.Uri
 import android.os.Parcelable
+import com.google.firebase.firestore.Exclude
 import kotlinx.parcelize.Parcelize
 @Parcelize
 data class MovieModel(
@@ -16,7 +17,8 @@ data class MovieModel(
     var description: String = "",
     var isFavorite: Boolean = false,
     var isWatchlist: Boolean = false,
-    var image: Uri = Uri.EMPTY,
+    @get:Exclude var image: Uri = Uri.EMPTY,
+    var imageUrl: String = "",
     var lat: Double = 0.0,
     var lng: Double = 0.0,
     var zoom: Float = 0f) : Parcelable

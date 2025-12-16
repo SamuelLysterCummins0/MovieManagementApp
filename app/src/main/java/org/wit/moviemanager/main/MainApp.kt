@@ -1,7 +1,9 @@
 package org.wit.moviemanager.main
 
 import android.app.Application
-import org.wit.moviemanager.models.MovieJSONStore
+import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
+import org.wit.moviemanager.models.MovieFirestore
 import org.wit.moviemanager.models.MovieModel
 import org.wit.moviemanager.models.MovieStore
 import timber.log.Timber
@@ -17,7 +19,8 @@ class MainApp : Application() {
         Timber.plant(Timber.DebugTree())
         i("Movie Manager started")
 
-        store = MovieJSONStore(applicationContext)
+        store = MovieFirestore(applicationContext)
+        Thread.sleep(1000)
         movies = store.findAll()
 
         i("Loaded ${movies.size} movies")

@@ -255,14 +255,9 @@ class MovieActivity : AppCompatActivity() {
                 when (result.resultCode) {
                     RESULT_OK -> {
                         if (result.data != null) {
-                            i("Got Location ${result.data.toString()}")
                             val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             val cinema = result.data!!.extras?.getString("cinema") ?: ""
                             val cinemaAddress = result.data!!.extras?.getString("cinemaAddress") ?: ""
-
-                            i("Location == $location")
-                            i("Cinema == $cinema")
-                            i("Address == $cinemaAddress")
 
                             movie.lat = location.lat
                             movie.lng = location.lng
@@ -279,8 +274,6 @@ class MovieActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    RESULT_CANCELED -> { }
-                    else -> { }
                 }
             }
     }

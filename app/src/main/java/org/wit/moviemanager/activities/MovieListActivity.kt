@@ -1,5 +1,6 @@
 package org.wit.moviemanager.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -13,14 +14,19 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import org.wit.moviemanager.R
 import org.wit.moviemanager.adapters.MovieAdapter
 import org.wit.moviemanager.adapters.MovieListener
 import org.wit.moviemanager.databinding.ActivityMovieListBinding
 import org.wit.moviemanager.main.MainApp
+import org.wit.moviemanager.models.MovieFirestore
 import org.wit.moviemanager.models.MovieModel
 import timber.log.Timber.i
 import java.util.ArrayList
+import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.app.AppCompatDelegate
 
 class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -87,6 +93,14 @@ class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnN
             R.id.nav_statistics -> {
                 val intent = Intent(this, StatisticsActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.nav_signout -> {
+                app.movies.clear()
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -218,9 +232,16 @@ class MovieListActivity : AppCompatActivity(), MovieListener, NavigationView.OnN
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
+
     override fun onResume() {
         super.onResume()
+        val firestore = app.store as MovieFirestore
+        firestore.reloadMovies()
         applyFilter(currentFilter)
+        Handler(Looper.getMainLooper()).postDelayed({
+            app.movies = app.store.findAll()
+            applyFilter(currentFilter)
+        }, 1000)
     }
 
     override fun onPause() {

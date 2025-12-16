@@ -16,6 +16,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PointOfInterest
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import org.wit.moviemanager.databinding.ActivityMapBinding
 import org.wit.moviemanager.R
 import org.wit.moviemanager.models.Location
@@ -42,6 +46,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPoiClic
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // Initialize Places SDK
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, getString(R.string.MAPS_API_KEY))
+        }
+
         location = intent.extras?.getParcelable<Location>("location")!!
         cinemaName = intent.extras?.getString("cinema") ?: ""
         cinemaAddress = intent.extras?.getString("cinemaAddress") ?: ""
@@ -50,9 +59,69 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPoiClic
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        // Setup autocomplete search
+        setupAutocomplete()
+
         onBackPressedDispatcher.addCallback(this) {
             returnResult()
         }
+    }
+
+    private fun setupAutocomplete() {
+        val autocompleteFragment = supportFragmentManager
+            .findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+
+        // Configure to search for establishments (businesses/venues)
+        autocompleteFragment.setPlaceFields(
+            listOf(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG,
+                Place.Field.ADDRESS
+            )
+        )
+
+        // Set hint and configure search
+        autocompleteFragment.setHint("Search for cinema or venue")
+
+        // Set type filter to show establishments (businesses)
+        autocompleteFragment.setTypesFilter(listOf("establishment"))
+
+        // Set country restriction (optional - Ireland only)
+        autocompleteFragment.setCountries("IE")
+
+        // Handle place selection from search
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                i("Place selected from search: ${place.name}")
+
+                place.latLng?.let { latLng ->
+                    currentMarker?.remove()
+
+                    location.lat = latLng.latitude
+                    location.lng = latLng.longitude
+                    location.zoom = 15f
+                    cinemaName = place.name ?: ""
+                    cinemaAddress = place.address ?: getAddressFromLocation(latLng)
+
+                    currentMarker = map.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title(cinemaName)
+                            .snippet(cinemaAddress)
+                    )
+                    currentMarker?.showInfoWindow()
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+
+                    i("Selected from search: $cinemaName at $latLng")
+                    i("Address: $cinemaAddress")
+                }
+            }
+
+            override fun onError(status: com.google.android.gms.common.api.Status) {
+                i("Autocomplete error: $status")
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -98,7 +167,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPoiClic
             i("Restored marker: $cinemaName at $loc")
         }
 
-        i("Map ready - tap on a business/place to select")
+        i("Map ready - tap on a business/place to select OR use search bar")
     }
 
     override fun onPoiClick(poi: PointOfInterest) {

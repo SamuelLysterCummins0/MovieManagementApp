@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "410946502194",
+    "project_id": "movieappmanager",
+    "storage_bucket": "movieappmanager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410946502194:android:0b16278605c96a4813c62b",
+        "android_client_info": {
+          "package_name": "org.wit.placemark"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD25OqGhedadmpTACI3k0JBB9Vt7qbgA8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
